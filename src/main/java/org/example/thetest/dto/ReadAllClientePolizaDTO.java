@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ClientePolizaDTO {
+public class ReadAllClientePolizaDTO {
     private Long idCliente;
 
     private Long idPoliza;

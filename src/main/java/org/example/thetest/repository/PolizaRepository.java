@@ -1,20 +1,19 @@
 package org.example.thetest.repository;
 
-import org.example.thetest.entity.Cliente;
+import org.example.thetest.entity.Poliza;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    //Read All Clientes
+public interface PolizaRepository extends JpaRepository<Poliza, Long> {
+    //Read All Pólizas
     @Query("""
-        select c 
-        from Cliente c
+        select p 
+        from Poliza p
         """)
-    Page<Cliente> readAllClientes(Pageable pageable);
+    Page<Poliza> readAllPolizas(Pageable pageable);
 }
