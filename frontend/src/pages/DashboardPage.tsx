@@ -19,66 +19,182 @@ export default function DashboardPage() {
         coberturaTotal,
         crearPoliza,
         eliminarPoliza,
+        pagina,
+        setPagina,
+        totalPaginas,
     } = usePolizas();
 
     const [isCreando, setIsCreando] = useState(false);
-    const [polizaSeleccionada, setPolizaSeleccionada] = useState<Poliza | null>(
-        null
-    );
+    const [polizaSeleccionada, setPolizaSeleccionada] =
+        useState<Poliza | null>(null);
 
     return (
-        <div className="page">
-            <header className="page-header">
+        <div
+            style={{
+                minHeight: "100vh",
+                background: "#f1f5f9",
+                padding: "24px",
+                fontFamily: "Arial, sans-serif",
+            }}
+        >
+            <header
+                style={{
+                    background: "#ffffff",
+                    padding: "24px",
+                    borderRadius: "12px",
+                    border: "1px solid #e2e8f0",
+                    marginBottom: "24px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                }}
+            >
                 <div>
-                    <h1>Gestión de Seguros</h1>
-                    <p className="subtitle">Administra tus pólizas de seguro.</p>
+                    <h1
+                        style={{
+                            margin: 0,
+                            color: "#1e293b",
+                            fontSize: "1.8rem",
+                        }}
+                    >
+                        theTest - Sistema de Administración de Seguros
+                    </h1>
+
+                    <p
+                        style={{
+                            margin: "8px 0 0",
+                            color: "#64748b",
+                        }}
+                    >
+                        It works!
+                    </p>
                 </div>
 
-                <div className="page-header-actions">
-                    <span className="usuario-label">¡Hola!</span>
-                </div>
+                <button
+                    onClick={() => setIsCreando(true)}
+                    style={{
+                        background: "#2563eb",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "8px",
+                        padding: "10px 18px",
+                        cursor: "pointer",
+                        fontWeight: 600,
+                    }}
+                >
+                    Crear Póliza
+                </button>
             </header>
 
-            <div className="toolbar">
-                <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => setIsCreando(true)}
-                >
-                    + Crear Póliza
-                </button>
-            </div>
-
-            <section className="stats-grid">
-                <StatCard label="Total de pólizas" value={String(total)} />
-                <StatCard label="Pólizas activas" value={String(activas)} />
+            <section
+                style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                        "repeat(auto-fit, minmax(200px, 1fr))",
+                    gap: "16px",
+                    marginBottom: "24px",
+                }}
+            >
                 <StatCard
-                    label="Prima total mensual"
+                    label="Total de pólizas"
+                    value={String(total)}
+                />
+
+                <StatCard
+                    label="Pólizas activas"
+                    value={String(activas)}
+                />
+
+                <StatCard
+                    label="Prima mensual"
                     value={formatMoney(primaTotalMensual)}
                 />
-                <StatCard label="Cobertura total" value={formatMoney(coberturaTotal)} />
+
+                <StatCard
+                    label="Cobertura total"
+                    value={formatMoney(coberturaTotal)}
+                />
+
             </section>
 
-            {error && <p className="form-error">{error}</p>}
-
-            {loading ? (
-                <p className="estado-vacio">Cargando pólizas...</p>
-            ) : polizas.length === 0 ? (
-                <p className="estado-vacio">
-                    Aún no tienes pólizas registradas. Crea la primera con el botón de
-                    arriba.
-                </p>
-            ) : (
-                <section className="polizas-grid">
-                    {polizas.map((poliza) => (
-                        <PolizaCard
-                            key={poliza.idPoliza}
-                            poliza={poliza}
-                            onVerDetalles={setPolizaSeleccionada}
-                        />
-                    ))}
-                </section>
+            {error && (
+                <div
+                    style={{
+                        background: "#fee2e2",
+                        color: "#991b1b",
+                        padding: "12px",
+                        borderRadius: "8px",
+                        marginBottom: "20px",
+                    }}
+                >
+                    {error}
+                </div>
             )}
+
+            <section>
+                <h2
+                    style={{
+                        color: "#334155",
+                        fontSize: "1.3rem",
+                        marginBottom: "16px",
+                    }}
+                >
+                    Pólizas
+                </h2>
+
+                {loading ? (
+                    <div
+                        style={{
+                            background: "white",
+                            padding: "20px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                        }}
+                    >
+                        Cargando pólizas...
+                    </div>
+                ) : polizas.length === 0 ? (
+                    <div
+                        style={{
+                            background: "white",
+                            padding: "20px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                            color: "#64748b",
+                        }}
+                    >
+                        No hay pólizas registradas.
+                    </div>
+                ) : (
+                    <div
+                        style={{
+                            display: "grid",
+                            gridTemplateColumns:
+                                "repeat(auto-fill, minmax(300px, 1fr))",
+                            gap: "16px",
+                        }}
+                    >
+                        {polizas.map((poliza) => (
+                            <PolizaCard
+                                key={poliza.idPoliza}
+                                poliza={poliza}
+                                onVerDetalles={setPolizaSeleccionada}
+                            />
+                        ))}
+                    </div>
+                )}
+
+                <button disabled={pagina===0}
+                        onClick={()=>setPagina(pagina-1)}
+                >Anterior</button>
+
+                <span>Pagina {pagina+1} de {totalPaginas}</span>
+
+                <button disabled={pagina+1>=totalPaginas}
+                        onClick={()=>setPagina(pagina+1)}
+                >Siguiente</button>
+
+            </section>
 
             <PolizaFormModal
                 isOpen={isCreando}

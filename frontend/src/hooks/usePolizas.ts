@@ -3,11 +3,16 @@ import type { CreatePolizaInput, Poliza } from "../types/poliza.js";
 import * as polizaService from "../services/polizaService.js";
 
 export function usePolizas() {
+
     const [polizas, setPolizas] = useState<Poliza[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const [pagina, setPagina] = useState(0);
+    const [totalPaginas, setTotalPaginas] = useState(0);
+
     const cargarPolizas = useCallback(async () => {
+
         try {
             setLoading(true);
             setError(null);

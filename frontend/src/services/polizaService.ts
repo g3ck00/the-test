@@ -12,6 +12,7 @@ export async function getPolizas(): Promise<Poliza[]> {
     return res.data.content;
 }
 
+
 export async function crearPoliza(data: CreatePolizaInput): Promise<void> {
     await http.post("/polizas", data);
 }
